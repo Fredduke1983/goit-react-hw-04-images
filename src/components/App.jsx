@@ -1,55 +1,45 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import { Container } from './app.styled';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Modal } from './Modal/Modal';
 import { SearchBar } from './Searchbar/Searchbar';
 
-export class App extends Component {
-  state = {
-    searchValue: '',
-    isLoading: false,
-    isShowModal: false,
-    largeImg: null,
+export function App() {
+  const [searchValue, setSearchValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isShowModal, setIsShowModal] = useState(false);
+  const [largeImg, setLargeImg] = useState(null);
+
+  const getSearchValue = searchValue => {
+    return setSearchValue(searchValue);
   };
 
-  getSearchValue = searchValue => {
-    return this.setState({ searchValue });
+  const setLoadState = isLoading => {
+    setIsLoading(isLoading);
   };
 
-  setLoadState = isLoading => {
-    this.setState({ isLoading });
+  const toggleShowModal = () => {
+    setIsShowModal(!isShowModal);
   };
 
-  setShowModal = () => {
-    this.setState({ isShowModal: !this.state.isShowModal });
+  const getLargeImg = largeImg => {
+    setLargeImg(largeImg);
   };
 
-  setLargeImg = largeImg => {
-    this.setState({ largeImg });
-  };
-
-  render() {
-    return (
-      <>
-        <Container>
-          <SearchBar
-            getSearchValue={this.getSearchValue}
-            isLoading={this.state.isLoading}
-          />
-          <ImageGallery
-            searchValue={this.state.searchValue}
-            setLoadState={this.setLoadState}
-            setLargeImg={this.setLargeImg}
-            setShowModal={this.setShowModal}
-          />
-        </Container>
-        {this.state.isShowModal && (
-          <Modal
-            setShowModal={this.setShowModal}
-            largeImg={this.state.largeImg}
-          />
-        )}
-      </>
-    );
-  }
+  return (
+    <>
+      <Container>
+        <SearchBar getSearchValue={getSearchValue} isLoading={isLoading} />
+        <ImageGallery
+          searchValue={searchValue}
+          setLoadState={setLoadState}
+          setLargeImg={setLargeImg}
+          setShowModal={toggleShowModal}
+        />
+      </Container>
+      {isShowModal && (
+        <Modal setShowModal={toggleShowModal} largeImg={largeImg} />
+      )}
+    </>
+  );
 }
