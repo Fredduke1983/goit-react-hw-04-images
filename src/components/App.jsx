@@ -14,16 +14,8 @@ export function App() {
     return setSearchValue(searchValue);
   };
 
-  const setLoadState = isLoading => {
-    setIsLoading(isLoading);
-  };
-
   const toggleShowModal = () => {
     setIsShowModal(!isShowModal);
-  };
-
-  const getLargeImg = largeImg => {
-    setLargeImg(largeImg);
   };
 
   return (
@@ -32,7 +24,7 @@ export function App() {
         <SearchBar getSearchValue={getSearchValue} isLoading={isLoading} />
         <ImageGallery
           searchValue={searchValue}
-          setLoadState={setLoadState}
+          setLoadState={setIsLoading}
           setLargeImg={setLargeImg}
           setShowModal={toggleShowModal}
         />

@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import {
   SearchBarStyle,
   SearchForm,
@@ -8,47 +8,41 @@ import {
 import { FiSearch } from 'react-icons/fi';
 import { Loader } from 'components/Loader/Loader';
 
-export class SearchBar extends Component {
-  state = {
-    value: '',
-  };
+export function SearchBar({ getSearchValue, isLoading }) {
+  const [value, setValue] = useState('');
 
-  resetForm() {
-    this.setState({
-      value: '',
-    });
+  function resetForm() {
+    setValue('');
   }
 
-  onSubmit = event => {
+  const onSubmit = event => {
     event.preventDefault();
-    this.props.getSearchValue(this.state.value);
-    this.resetForm();
+    getSearchValue(value);
+    resetForm();
   };
 
-  onChange = event => {
-    this.setState({ value: event.target.value });
+  const onChange = ({ target }) => {
+    setValue(target.value);
   };
 
-  render() {
-    return (
-      <SearchBarStyle>
-        {this.props.isLoading && <Loader />}
-        <SearchForm onSubmit={this.onSubmit}>
-          <SubmitBtn type="submit">
-            <span className="button-label">
-              <FiSearch />
-            </span>
-          </SubmitBtn>
-          <SearchInput
-            type="text"
-            // autocomplete="off"
-            // autofocus
-            placeholder="Search images and photos"
-            onChange={this.onChange}
-            value={this.state.value}
-          />
-        </SearchForm>
-      </SearchBarStyle>
-    );
-  }
+  return (
+    <SearchBarStyle>
+      {isLoading && <Loader />}
+      <SearchForm onSubmit={onSubmit}>
+        <SubmitBtn type="submit">
+          <span className="button-label">
+            <FiSearch />
+          </span>
+        </SubmitBtn>
+        <SearchInput
+          type="text"
+          // autocomplete="off"
+          // autofocus
+          placeholder="Search images and photos"
+          onChange={onChange}
+          value={value}
+        />
+      </SearchForm>
+    </SearchBarStyle>
+  );
 }
