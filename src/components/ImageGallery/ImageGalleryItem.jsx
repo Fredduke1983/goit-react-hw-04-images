@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { GalleryItems } from './imageGallery.styled';
 import { Modal } from 'components/Modal/Modal';
 
-export function ImageGalleryItem(props) {
+export function ImageGalleryItem({ dataPics }) {
   const [isShowModal, setIsShowModal] = useState(false);
   const [largeImg, setLargeImg] = useState(null);
 
@@ -11,7 +11,7 @@ export function ImageGalleryItem(props) {
   };
 
   const onClick = e => {
-    const largeImg = props.dataPics.find(el => {
+    const largeImg = dataPics.find(el => {
       return e.target.src === el.webformatURL;
     }).largeImageURL;
     setLargeImg(largeImg);
@@ -20,7 +20,7 @@ export function ImageGalleryItem(props) {
 
   return (
     <>
-      {props.dataPics.map(img => {
+      {dataPics.map(img => {
         return (
           <GalleryItems key={img.id}>
             <img

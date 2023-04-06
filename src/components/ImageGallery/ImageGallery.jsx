@@ -17,11 +17,9 @@ export function ImageGallery({ searchValue, setLoadState, onMore, page }) {
     getFetchPixabay(searchValue, page)
       .then(response => {
         if (response.data.hits.length !== 0 && page === 1) {
-          console.log('IF-1');
           setIsEmptyList(true);
           return setDataPics(() => [...response.data.hits]);
         } else if (response.data.hits.length !== 0 && page > 1) {
-          console.log('IF-2');
           return setDataPics(prev => [...prev, ...response.data.hits]);
         } else if (response.data.hits.length === 0 && page > 1) {
           setIsEmptyList(false);
