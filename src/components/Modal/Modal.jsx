@@ -13,12 +13,12 @@ export class Modal extends Component {
 
   hideModal = e => {
     if (e.code === 'Escape') {
-      this.props.setShowModal();
+      this.props.toggleShowModal();
     }
   };
 
   onClick = () => {
-    this.props.setShowModal();
+    this.props.toggleShowModal();
   };
 
   render() {

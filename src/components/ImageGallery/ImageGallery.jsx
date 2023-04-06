@@ -1,86 +1,50 @@
 import { getFetchPixabay } from 'components/GetFetchPixabay/getFetchPixabay';
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { Gallery, LoadMore } from './imageGallery.styled';
 import { ImageGalleryItem } from './ImageGalleryItem';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export class ImageGallery extends Component {
-  state = {
-    dataPics: [],
-    page: 1,
-    isEmptyList: false,
-  };
+export function ImageGallery({ searchValue, setLoadState, onMore, page }) {
+  const [dataPics, setDataPics] = useState([]);
+  const [isEmptyList, setIsEmptyList] = useState(false);
 
-  componentDidUpdate(prevProps, prevState) {
-    const { searchValue, setLoadState } = this.props;
-    const { page, dataPics } = this.state;
+  useEffect(() => {
+    if (!searchValue) return;
 
-    if (page !== prevState.page) {
-      setLoadState(true);
-      getFetchPixabay(searchValue, page)
-        .then(response => {
-          if (response.data.hits.length === 0) {
-            this.setState({ isEmptyList: false });
-            return toast('No more picture');
-          }
-          this.setState({
-            dataPics: [...dataPics, ...response.data.hits],
-            isEmptyList: true,
-          });
-        })
-        .finally(
-          setTimeout(() => {
-            return this.props.setLoadState(false);
-          }, 1000)
-        );
-    }
+    setLoadState(true);
 
-    if (searchValue !== prevProps.searchValue && searchValue) {
-      setLoadState(true);
+    getFetchPixabay(searchValue, page)
+      .then(response => {
+        if (response.data.hits.length !== 0 && page === 1) {
+          console.log('IF-1');
+          setIsEmptyList(true);
+          return setDataPics(() => [...response.data.hits]);
+        } else if (response.data.hits.length !== 0 && page > 1) {
+          console.log('IF-2');
+          return setDataPics(prev => [...prev, ...response.data.hits]);
+        } else if (response.data.hits.length === 0 && page > 1) {
+          setIsEmptyList(false);
+          return toast('No more picture');
+        } else if (response.data.hits.length === 0 && page === 1) {
+          setIsEmptyList(false);
+          return toast('Picture not find');
+        }
+      })
+      .then(
+        setTimeout(() => {
+          return setLoadState(false);
+        }, 1000)
+      );
+  }, [searchValue, page, setLoadState]);
 
-      if (prevState.page !== 1) {
-        this.setState({ page: 1 });
-      }
-
-      getFetchPixabay(searchValue)
-        .then(response => {
-          if (response.data.hits.length === 0) {
-            return toast('Picture not find');
-          }
-          this.setState({
-            dataPics: response.data.hits,
-            isEmptyList: true,
-          });
-        })
-        .finally(
-          setTimeout(() => {
-            return setLoadState(false);
-          }, 1000)
-        );
-    }
-  }
-
-  onMore = () => {
-    this.setState({ page: this.state.page + 1 });
-  };
-
-  render() {
-    const { dataPics, isEmptyList } = this.state;
-    return (
-      <>
-        <Gallery>
-          {dataPics.length !== 0 && (
-            <ImageGalleryItem
-              dataPics={dataPics}
-              setLargeImg={this.props.setLargeImg}
-              setShowModal={this.props.setShowModal}
-            />
-          )}
-        </Gallery>
-        {isEmptyList && <LoadMore onClick={this.onMore}>Load More...</LoadMore>}
-        <ToastContainer />
-      </>
-    );
-  }
+  return (
+    <>
+      <Gallery>
+        {dataPics.length !== 0 && <ImageGalleryItem dataPics={dataPics} />}
+      </Gallery>
+      {isEmptyList && <LoadMore onClick={onMore}>Load More...</LoadMore>}
+      <ToastContainer />
+    </>
+  );
 }

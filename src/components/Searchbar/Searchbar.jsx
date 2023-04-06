@@ -8,7 +8,7 @@ import {
 import { FiSearch } from 'react-icons/fi';
 import { Loader } from 'components/Loader/Loader';
 
-export function SearchBar({ getSearchValue, isLoading }) {
+export function SearchBar({ getSearchValue, isLoading, setPage }) {
   const [value, setValue] = useState('');
 
   function resetForm() {
@@ -19,6 +19,7 @@ export function SearchBar({ getSearchValue, isLoading }) {
     event.preventDefault();
     getSearchValue(value);
     resetForm();
+    setPage(1);
   };
 
   const onChange = ({ target }) => {

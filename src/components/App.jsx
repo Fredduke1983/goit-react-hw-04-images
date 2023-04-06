@@ -1,37 +1,37 @@
 import { useState } from 'react';
 import { Container } from './app.styled';
 import { ImageGallery } from './ImageGallery/ImageGallery';
-import { Modal } from './Modal/Modal';
 import { SearchBar } from './Searchbar/Searchbar';
 
 export function App() {
   const [searchValue, setSearchValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isShowModal, setIsShowModal] = useState(false);
-  const [largeImg, setLargeImg] = useState(null);
+
+  const [page, setPage] = useState(1);
 
   const getSearchValue = searchValue => {
     return setSearchValue(searchValue);
   };
 
-  const toggleShowModal = () => {
-    setIsShowModal(!isShowModal);
+  const onMore = () => {
+    setPage(prevPage => prevPage + 1);
   };
 
   return (
     <>
       <Container>
-        <SearchBar getSearchValue={getSearchValue} isLoading={isLoading} />
+        <SearchBar
+          getSearchValue={getSearchValue}
+          isLoading={isLoading}
+          setPage={setPage}
+        />
         <ImageGallery
           searchValue={searchValue}
           setLoadState={setIsLoading}
-          setLargeImg={setLargeImg}
-          setShowModal={toggleShowModal}
+          onMore={onMore}
+          page={page}
         />
       </Container>
-      {isShowModal && (
-        <Modal setShowModal={toggleShowModal} largeImg={largeImg} />
-      )}
     </>
   );
 }
