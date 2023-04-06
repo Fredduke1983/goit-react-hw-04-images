@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { ModalStyle } from './modal.styled';
 import { Overlay } from './overlay.styled';
 
@@ -29,3 +30,8 @@ export function Modal({ largeImg, toggleShowModal }) {
     </Overlay>
   );
 }
+
+Modal.propTypes = {
+  largeImageURL: PropTypes.string,
+  toggleShowModal: PropTypes.func,
+};

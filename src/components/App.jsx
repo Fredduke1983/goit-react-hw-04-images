@@ -6,7 +6,6 @@ import { SearchBar } from './Searchbar/Searchbar';
 export function App() {
   const [searchValue, setSearchValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
   const [page, setPage] = useState(1);
 
   const getSearchValue = searchValue => {

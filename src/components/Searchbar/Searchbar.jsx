@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import {
   SearchBarStyle,
   SearchForm,
@@ -47,3 +48,9 @@ export function SearchBar({ getSearchValue, isLoading, setPage }) {
     </SearchBarStyle>
   );
 }
+
+SearchBar.propTypes = {
+  getSearchValue: PropTypes.func,
+  isLoading: PropTypes.bool,
+  setPage: PropTypes.func,
+};

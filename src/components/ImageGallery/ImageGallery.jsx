@@ -1,5 +1,6 @@
 import { getFetchPixabay } from 'components/GetFetchPixabay/getFetchPixabay';
 import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Gallery, LoadMore } from './imageGallery.styled';
 import { ImageGalleryItem } from './ImageGalleryItem';
 import { ToastContainer, toast } from 'react-toastify';
@@ -46,3 +47,10 @@ export function ImageGallery({ searchValue, setLoadState, onMore, page }) {
     </>
   );
 }
+
+ImageGallery.propTypes = {
+  searchValue: PropTypes.string.isRequired,
+  page: PropTypes.number.isRequired,
+  setLoadState: PropTypes.func,
+  onMore: PropTypes.func,
+};
